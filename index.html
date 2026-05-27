@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Formular</title>
 
   <style>
@@ -40,7 +41,9 @@
       margin-bottom: 5px;
     }
 
-    input, textarea {
+    input,
+    textarea,
+    select {
       width: 100%;
       padding: 10px;
       border: 1px solid #ccc;
@@ -71,7 +74,8 @@
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 15px;
+      width: 100%;
     }
 
     button:hover {
@@ -79,6 +83,7 @@
     }
   </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -87,51 +92,51 @@
 
   <div class="field">
     <label>Name:</label>
-    <input type="text">
+    <input type="text" id="beschName">
   </div>
 
   <div class="field">
     <label>Vorname:</label>
-    <input type="text">
+    <input type="text" id="beschVorname">
   </div>
 
   <div class="field">
     <label>Geb. Datum:</label>
-    <input type="date">
+    <input type="date" id="gebDatum">
   </div>
 
   <div class="field">
     <label>Adresse:</label>
-    <input type="text">
+    <input type="text" id="beschAdresse">
   </div>
 
   <h2>Schulpflichtig in</h2>
 
   <div class="field">
     <label>Ort / Schulhaus:</label>
-    <input type="text">
+    <input type="text" id="schulhaus">
   </div>
 
   <h2>Gesetzliche Vertretung</h2>
 
   <div class="field">
     <label>Name:</label>
-    <input type="text">
+    <input type="text" id="gesetzName">
   </div>
 
   <div class="field">
     <label>Vorname:</label>
-    <input type="text">
+    <input type="text" id="gesetzVorname">
   </div>
 
   <div class="field">
     <label>Adresse:</label>
-    <input type="text">
+    <input type="text" id="gesetzAdresse">
   </div>
 
   <div class="field">
     <label>Telefonnummer:</label>
-    <input type="tel">
+    <input type="tel" id="telefon">
   </div>
 
   <h2>Standort</h2>
@@ -147,22 +152,38 @@
 
   <div class="hinweis">
 - OBV Verfahren für 10 – 15-jährige
+- Brief an Eltern schicken mit Vorlage: (V) - Ausb F
 - Infos: Gekoweisung 09.02.02
   </div>
 
   <h2>Widerhandlungen</h2>
 
   <div class="field">
-    <textarea placeholder="Widerhandlungen eingeben..."></textarea>
+    <label>Funktion:</label>
+
+    <select id="funktion">
+      <option value="">Bitte auswählen</option>
+      <option value="Lenker">Lenker</option>
+      <option value="Mitfahrer">Mitfahrer</option>
+    </select>
   </div>
 
-<button onclick="emailVersenden()">
-  E-Mail versenden
-</button>
-  
+  <div class="field">
+    <label>Widerhandlungen:</label>
+
+    <textarea
+      id="widerhandlungen"
+      placeholder="Widerhandlungen eingeben..."></textarea>
+  </div>
+
+  <button onclick="emailVersenden()">
+    E-Mail versenden
+  </button>
+
 </div>
 
 <script>
+
 async function standortErmitteln() {
 
   if (!navigator.geolocation) {
@@ -171,6 +192,7 @@ async function standortErmitteln() {
   }
 
   navigator.geolocation.getCurrentPosition(
+
     async function(position) {
 
       const lat = position.coords.latitude;
@@ -179,6 +201,7 @@ async function standortErmitteln() {
       let text = `Koordinaten:\n${lat}, ${lon}\n\n`;
 
       try {
+
         const response = await fetch(
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
         );
@@ -201,64 +224,45 @@ async function standortErmitteln() {
     }
   );
 }
-</script>
 
-<script>
 function emailVersenden() {
-
-  const inputs = document.querySelectorAll("input");
-  const textareas = document.querySelectorAll("textarea");
-
-  const daten = {
-    beschName: inputs[0].value,
-    beschVorname: inputs[1].value,
-    gebDatum: inputs[2].value,
-    beschAdresse: inputs[3].value,
-
-    schulhaus: inputs[4].value,
-
-    gesetzName: inputs[5].value,
-    gesetzVorname: inputs[6].value,
-    gesetzAdresse: inputs[7].value,
-    telefon: inputs[8].value,
-
-    standort: textareas[0].value,
-    widerhandlungen: textareas[1].value
-  };
 
   const betreff = "Meldung Beschuldigte Person";
 
   const nachricht =
 `Beschuldigte Person
 
-Name: ${daten.beschName}
-Vorname: ${daten.beschVorname}
-Geb. Datum: ${daten.gebDatum}
-Adresse: ${daten.beschAdresse}
+Name: ${document.getElementById("beschName").value}
+Vorname: ${document.getElementById("beschVorname").value}
+Geb. Datum: ${document.getElementById("gebDatum").value}
+Adresse: ${document.getElementById("beschAdresse").value}
 
 Schulpflichtig in
 
-Ort / Schulhaus: ${daten.schulhaus}
+Ort / Schulhaus: ${document.getElementById("schulhaus").value}
 
 Gesetzliche Vertretung
 
-Name: ${daten.gesetzName}
-Vorname: ${daten.gesetzVorname}
-Adresse: ${daten.gesetzAdresse}
-Telefonnummer: ${daten.telefon}
+Name: ${document.getElementById("gesetzName").value}
+Vorname: ${document.getElementById("gesetzVorname").value}
+Adresse: ${document.getElementById("gesetzAdresse").value}
+Telefonnummer: ${document.getElementById("telefon").value}
 
 Standort
 
-${daten.standort}
+${document.getElementById("standort").value}
 
 Hinweise
 
 - OBV Verfahren für 10 – 15-jährige
+- Brief an Eltern schicken mit Vorlage: (V) - Ausb F
 - Infos: Gekoweisung 09.02.02
 
 Widerhandlungen
 
-${daten.widerhandlungen}
+Funktion: ${document.getElementById("funktion").value}
+
+${document.getElementById("widerhandlungen").value}
 `;
 
   const mailtoLink =
@@ -268,6 +272,7 @@ ${daten.widerhandlungen}
 
   window.location.href = mailtoLink;
 }
+
 </script>
 
 </body>
