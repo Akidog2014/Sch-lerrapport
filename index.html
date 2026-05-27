@@ -102,7 +102,7 @@
 
   <div class="field">
     <label>Geb. Datum:</label>
-    <input type="date" id="gebDatum">
+    <input type="text" id="gebDatum" placeholder="z.B. 01.01.2010">
   </div>
 
   <div class="field">
@@ -134,6 +134,18 @@
     <input type="tel" id="telefon">
   </div>
 
+  <h2>Fahrzeug</h2>
+
+  <div class="field">
+    <label>Marke:</label>
+    <input type="text" id="fahrzeugMarke">
+  </div>
+
+  <div class="field">
+    <label>Kontrollschild:</label>
+    <input type="text" id="kontrollschild">
+  </div>
+
   <h2>Standort</h2>
 
   <div class="field">
@@ -147,6 +159,7 @@
 
   <div class="hinweis">
 - OBV Verfahren für 10 – 15-jährige
+- Brief an Eltern schicken mit Vorlage: (V) - Ausb F
 - Infos: Gekoweisung 09.02.02
   </div>
 
@@ -241,6 +254,11 @@ Name: ${document.getElementById("gesetzName").value}
 Vorname: ${document.getElementById("gesetzVorname").value}
 Telefonnummer: ${document.getElementById("telefon").value}
 
+Fahrzeug
+
+Marke: ${document.getElementById("fahrzeugMarke").value}
+Kontrollschild: ${document.getElementById("kontrollschild").value}
+
 Standort
 
 ${document.getElementById("standort").value}
@@ -248,6 +266,7 @@ ${document.getElementById("standort").value}
 Hinweise
 
 - OBV Verfahren für 10 – 15-jährige
+- Brief an Eltern schicken mit Vorlage: (V) - Ausb F
 - Infos: Gekoweisung 09.02.02
 
 Widerhandlungen
