@@ -145,6 +145,10 @@
     Standort ermitteln
   </button>
 
+<button onclick="emailVersenden()">
+  E-Mail versenden
+</button>
+  
   <div class="hinweis">
 - OBV Verfahren für 10 – 15-jährige
 - Brief an Eltern schicken mit Vorlage: (V) - Ausb F
@@ -197,6 +201,74 @@ async function standortErmitteln() {
       alert("Standort konnte nicht ermittelt werden.");
     }
   );
+}
+</script>
+
+<script>
+function emailVersenden() {
+
+  const inputs = document.querySelectorAll("input");
+  const textareas = document.querySelectorAll("textarea");
+
+  const daten = {
+    beschName: inputs[0].value,
+    beschVorname: inputs[1].value,
+    gebDatum: inputs[2].value,
+    beschAdresse: inputs[3].value,
+
+    schulhaus: inputs[4].value,
+
+    gesetzName: inputs[5].value,
+    gesetzVorname: inputs[6].value,
+    gesetzAdresse: inputs[7].value,
+    telefon: inputs[8].value,
+
+    standort: textareas[0].value,
+    widerhandlungen: textareas[1].value
+  };
+
+  const betreff = "Meldung Beschuldigte Person";
+
+  const nachricht =
+`Beschuldigte Person
+
+Name: ${daten.beschName}
+Vorname: ${daten.beschVorname}
+Geb. Datum: ${daten.gebDatum}
+Adresse: ${daten.beschAdresse}
+
+Schulpflichtig in
+
+Ort / Schulhaus: ${daten.schulhaus}
+
+Gesetzliche Vertretung
+
+Name: ${daten.gesetzName}
+Vorname: ${daten.gesetzVorname}
+Adresse: ${daten.gesetzAdresse}
+Telefonnummer: ${daten.telefon}
+
+Standort
+
+${daten.standort}
+
+Hinweise
+
+- OBV Verfahren für 10 – 15-jährige
+- Brief an Eltern schicken mit Vorlage: (V) - Ausb F
+- Infos: Gekoweisung 09.02.02
+
+Widerhandlungen
+
+${daten.widerhandlungen}
+`;
+
+  const mailtoLink =
+    `mailto:wueest.marc@bluewin.ch` +
+    `?subject=${encodeURIComponent(betreff)}` +
+    `&body=${encodeURIComponent(nachricht)}`;
+
+  window.location.href = mailtoLink;
 }
 </script>
 
